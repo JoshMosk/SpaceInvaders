@@ -23,7 +23,7 @@ void Laser::Update(float deltatime)
 			m_yPos = -50;
 		}
 
-		m_yPos += 400.0f * deltatime;
+		m_yPos += 300.0f * deltatime;
 	}
 }
 

@@ -3,10 +3,10 @@
 
 ObjectPool::ObjectPool()
 {
-	Laser** m_pool = new Laser*[50];
+	 m_pool = new Laser*[50];
 	for (int i = 0; i < 50; i++)
 	{
-		m_pool[i] = new Laser;
+		m_pool[i] = new Laser();
 	}
 }
 

@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Renderer2D.h"
 #include "Player.h"
+#include "ObjectPool.h"
 
 class Application2D : public aie::Application {
 public:
@@ -21,11 +22,14 @@ protected:
 	Player m_player;
 	ObjectPool m_lasers;
 
+	int m_nextLaser = 0;
+	float m_shootTimer = 0;
+
 	aie::Texture*		m_laserTexture;
+	aie::Texture*		m_shipTexture;
 
 	aie::Renderer2D*	m_2dRenderer;
 	aie::Texture*		m_texture;
-	aie::Texture*		m_shipTexture;
 	aie::Font*			m_font;
 
 	float m_cameraX, m_cameraY;

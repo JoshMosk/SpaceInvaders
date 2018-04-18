@@ -45,6 +45,7 @@ void Application2D::shutdown() {
 void Application2D::update(float deltaTime) {
 
 	m_timer += deltaTime;
+	m_shootTimer += deltaTime;
 
 	for (int i = 0; i < 50; i++)
 	{
@@ -67,8 +68,18 @@ void Application2D::update(float deltaTime) {
 	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
 		m_player.m_xPos += 500.0f * deltaTime;
 
-	//if(input->wasKeyPressed(aie::INPUT_KEY_SPACE)) //JM:STARTHERE, need to make it shoot the next free bullet
-	//	m_laser.Shoot(m_player.m_xPos);
+	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE) && m_shootTimer > 0.7f) //shoots bullets if scpace key is pressed and shoot timer is high enough
+	{
+		m_lasers.m_pool[m_nextLaser]->Shoot(m_player.m_xPos);
+
+		if (m_nextLaser == 50)
+		{
+			m_nextLaser = 0;
+		}
+
+		m_nextLaser++;
+		m_shootTimer = 0;
+	}
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -94,8 +105,13 @@ void Application2D::draw() {
 	m_2dRenderer->setUVRect(0,0,1,1);
 	m_2dRenderer->drawSprite(m_shipTexture, m_player.m_xPos, 50, 0, 0, 0, 1);
 
-	//m_2dRenderer->drawSprite(m_laserTexture, m_laser.m_xPos, m_laser.m_yPos, 0, 0, 0, 1);		//draw laser
-	
+	for (int i = 0; i < 50; i++) //draw lasers
+	{
+		if (m_lasers.m_pool[i]->active)
+		{
+			m_2dRenderer->drawSprite(m_laserTexture, m_lasers.m_pool[i]->m_xPos, m_lasers.m_pool[i]->m_yPos, 0, 0, 0, 1);
+		}
+	}
 
 	// draw a thin line
 	m_2dRenderer->drawLine(300, 300, 600, 400, 2, 1);
