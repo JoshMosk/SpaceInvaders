@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Player.h"
 #include "ObjectPool.h"
+#include "Laser.h"
 
 Application2D::Application2D() 
 {
@@ -21,11 +22,13 @@ bool Application2D::startup()
 	m_2dRenderer = new aie::Renderer2D();
 
 	m_texture = new aie::Texture("./textures/numbered_grid.tga");
-	m_shipTexture = new aie::Texture("./textures/ship.png");
 
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
+	m_shipTexture = new aie::Texture("./textures/ship.png");
 	m_laserTexture = new aie::Texture("./textures/laser.png");
+	m_alienTexture = new aie::Texture("./textures/alien.png");
+	m_BackgroundTexture = new aie::Texture("./textures/background.png");
 
 	//m_cameraX = 0;
 	//m_cameraY = 0;
@@ -34,11 +37,14 @@ bool Application2D::startup()
 	return true;
 }
 
-void Application2D::shutdown() {
+void Application2D::shutdown() 
+{
+	delete m_BackgroundTexture;
+	delete m_alienTexture;
 	delete m_laserTexture;
+	delete m_shipTexture;
 	delete m_font;
 	delete m_texture;
-	delete m_shipTexture;
 	delete m_2dRenderer;
 }
 
@@ -47,7 +53,7 @@ void Application2D::update(float deltaTime) {
 	m_timer += deltaTime;
 	m_shootTimer += deltaTime;
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < m_lasers.m_maxIndex; i++)
 	{
 		m_lasers.m_pool[i]->Update(deltaTime);
 	}
@@ -70,12 +76,12 @@ void Application2D::update(float deltaTime) {
 
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE) && m_shootTimer > 0.7f) //shoots bullets if scpace key is pressed and shoot timer is high enough
 	{
-		m_lasers.m_pool[m_nextLaser]->Shoot(m_player.m_xPos);
-
-		if (m_nextLaser == 50)
+		if (m_nextLaser == m_lasers.m_maxIndex)
 		{
 			m_nextLaser = 0;
 		}
+
+		m_lasers.m_pool[m_nextLaser]->Shoot(m_player.m_xPos);
 
 		m_nextLaser++;
 		m_shootTimer = 0;
@@ -97,15 +103,27 @@ void Application2D::draw() {
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
+	//draw background
+	m_2dRenderer->drawSprite(m_BackgroundTexture, 0, 0, 1280, 720, 0, 0, 0, 0);
+
 	// demonstrate animation
 	m_2dRenderer->setUVRect(int(m_timer) % 8 / 8.0f, 0, 1.f / 8, 1.f / 8);
 	m_2dRenderer->drawSprite(m_texture, 200, 200, 100, 100);
 
-	// demonstrate spinning sprite
+	// draw the player
 	m_2dRenderer->setUVRect(0,0,1,1);
-	m_2dRenderer->drawSprite(m_shipTexture, m_player.m_xPos, 50, 0, 0, 0, 1);
+	m_2dRenderer->drawSprite(m_shipTexture, m_player.m_xPos, 50, 0, 0, 0, 1);		//JM:STARTHERE, need to get player in front of background
 
-	for (int i = 0; i < 50; i++) //draw lasers
+	// draw an enemy sprite
+	for (int i = 0; i < m_enemies.m_maxIndex; i++)
+	{
+		if (m_enemies.m_pool[i]->m_isActive)
+		{
+			m_2dRenderer->drawSprite(m_alienTexture, sin(m_timer / 3) * 280 + m_enemies.m_pool[i]->m_xPos, m_enemies.m_pool[i]->m_yPos, 0, 0, 0, 1);
+		}
+	}
+
+	for (int i = 0; i < m_lasers.m_maxIndex; i++) //draw lasers
 	{
 		if (m_lasers.m_pool[i]->active)
 		{

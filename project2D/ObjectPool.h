@@ -1,12 +1,39 @@
 #pragma once
-#include "Laser.h"
 
+template<typename T>
 class ObjectPool
 {
 public:
-	ObjectPool();
-	~ObjectPool();
+	ObjectPool(int maxIndex)
+	{
+		m_maxIndex = maxIndex;
+		m_pool = new T*[m_maxIndex];
+		for (int i = 0; i < m_maxIndex; i++)
+		{
+			m_pool[i] = new T();
+		}
+	}
 
-	Laser** m_pool;
+	ObjectPool(int maxIndex, float space)
+	{
+		m_maxIndex = maxIndex;
+		m_pool = new T*[m_maxIndex];
+		for (int i = 0; i < m_maxIndex; i++)
+		{
+			m_pool[i] = new T(i * space + 320, 640);
+		}
+	}
+
+	~ObjectPool()
+	{
+		for (int i = 0; i < m_maxIndex; i++)
+		{
+			delete m_pool[i];
+		}
+		delete[] m_pool;
+	}
+
+	int m_maxIndex;
+	T** m_pool;
 };
 
