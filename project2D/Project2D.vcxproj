@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="HitBox.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -171,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="HitBox.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="Player.h" />

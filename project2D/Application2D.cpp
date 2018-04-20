@@ -104,7 +104,7 @@ void Application2D::draw() {
 	m_2dRenderer->begin();
 
 	//draw background
-	m_2dRenderer->drawSprite(m_BackgroundTexture, 0, 0, 1280, 720, 0, 0, 0, 0);
+	m_2dRenderer->drawSprite(m_BackgroundTexture, 0, 0, 1280, 720, 0, 100, 0, 0);
 
 	// demonstrate animation
 	m_2dRenderer->setUVRect(int(m_timer) % 8 / 8.0f, 0, 1.f / 8, 1.f / 8);
@@ -119,7 +119,7 @@ void Application2D::draw() {
 	{
 		if (m_enemies.m_pool[i]->m_isActive)
 		{
-			m_2dRenderer->drawSprite(m_alienTexture, sin(m_timer / 3) * 280 + m_enemies.m_pool[i]->m_xPos, m_enemies.m_pool[i]->m_yPos, 0, 0, 0, 1);
+			m_2dRenderer->drawSprite(m_alienTexture, sin(m_timer / 3) * 280 + m_enemies.m_pool[i]->m_xPos, m_enemies.m_pool[i]->m_yPos, 0, 0, 0, 0);
 		}
 	}
 
