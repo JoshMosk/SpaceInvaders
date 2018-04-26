@@ -1,5 +1,7 @@
 #pragma once
 
+class HitBox;
+
 class Enemy
 {
 public:
@@ -9,9 +11,7 @@ public:
 	void Move();
 	void Shoot();
 
-	float m_xPos;
-	float m_yPos;
+	HitBox* m_hitBox;
 
-	bool m_isActive;
 	bool m_canShoot;
 };

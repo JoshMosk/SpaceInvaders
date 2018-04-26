@@ -14,7 +14,7 @@ public:
 		}
 	}
 
-	ObjectPool(int maxIndex, float space)
+	ObjectPool(int maxIndex, float space)		//used for enemies and their spacing
 	{
 		m_maxIndex = maxIndex;
 		m_pool = new T*[m_maxIndex];

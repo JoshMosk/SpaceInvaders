@@ -1,17 +1,15 @@
 #include "Enemy.h"
+#include "HitBox.h"
 
 Enemy::Enemy(int xPos, int yPos)
 {
+	m_hitBox = new HitBox(true, xPos, yPos, 50, 50);
 	m_canShoot = false;
-	m_isActive = true;
-
-	m_xPos = xPos;
-	m_yPos = yPos;
 }
 
 Enemy::~Enemy()
 {
-	
+	delete m_hitBox;
 }
 
 void Enemy::Move()

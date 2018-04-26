@@ -1,10 +1,14 @@
 #pragma once
+
+class HitBox;
+
 class Player
 {
 public:
 	Player();
 	~Player();
-	float m_xPos;
+
+	HitBox* m_hitBox;
 
 private:
 };

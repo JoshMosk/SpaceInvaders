@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "ObjectPool.h"
 #include "Laser.h"
+#include "HitBox.h"
 
 Application2D::Application2D() 
 {
@@ -55,33 +56,34 @@ void Application2D::update(float deltaTime) {
 
 	for (int i = 0; i < m_lasers.m_maxIndex; i++)
 	{
+		for (int i = 0; i < m_enemies.m_maxIndex; i++)
+		{
+			if (m_lasers.m_pool[i]->m_hitBox->CheckHit(m_enemies.m_pool[i]->m_hitBox))
+			{
+				m_lasers.m_pool[i]->m_hitBox->m_active = false;
+				m_enemies.m_pool[i]->m_hitBox->m_active = false;
+			}
+		}
 		m_lasers.m_pool[i]->Update(deltaTime);
 	}
 
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
-	// use arrow keys to move camera
-	//if (input->isKeyDown(aie::INPUT_KEY_UP))
-	//	m_cameraY += 500.0f * deltaTime;
-
-	//if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-	//	m_cameraY -= 500.0f * deltaTime;
-
 	if (input->isKeyDown(aie::INPUT_KEY_LEFT))
-		m_player.m_xPos -= 500.0f * deltaTime;
+		m_player.m_hitBox->m_xPos -= 500.0f * deltaTime;
 
 	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-		m_player.m_xPos += 500.0f * deltaTime;
+		m_player.m_hitBox->m_xPos += 500.0f * deltaTime;
 
-	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE) && m_shootTimer > 0.7f) //shoots bullets if scpace key is pressed and shoot timer is high enough
+	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE) && m_shootTimer > 0.7f) //shoots bullets if space key is pressed and shoot timer is high enough
 	{
 		if (m_nextLaser == m_lasers.m_maxIndex)
 		{
 			m_nextLaser = 0;
 		}
 
-		m_lasers.m_pool[m_nextLaser]->Shoot(m_player.m_xPos);
+		m_lasers.m_pool[m_nextLaser]->Shoot(m_player.m_hitBox->m_xPos);
 
 		m_nextLaser++;
 		m_shootTimer = 0;
@@ -92,7 +94,8 @@ void Application2D::update(float deltaTime) {
 		quit();
 }
 
-void Application2D::draw() {
+void Application2D::draw() 
+{
 
 	// wipe the screen to the background colour
 	clearScreen();
@@ -112,25 +115,38 @@ void Application2D::draw() {
 
 	// draw the player
 	m_2dRenderer->setUVRect(0,0,1,1);
-	m_2dRenderer->drawSprite(m_shipTexture, m_player.m_xPos, 50, 0, 0, 0, 1);		//JM:STARTHERE, need to get player in front of background
+	m_2dRenderer->drawSprite(m_shipTexture, m_player.m_hitBox->m_xPos, 50, 0, 0, 0, 1);		
 
 	// draw an enemy sprite
 	for (int i = 0; i < m_enemies.m_maxIndex; i++)
 	{
-		if (m_enemies.m_pool[i]->m_isActive)
+		if (m_enemies.m_pool[i]->m_hitBox->m_active)
 		{
-			m_2dRenderer->drawSprite(m_alienTexture, sin(m_timer / 3) * 280 + m_enemies.m_pool[i]->m_xPos, m_enemies.m_pool[i]->m_yPos, 0, 0, 0, 0);
+			m_2dRenderer->drawSprite(m_alienTexture, sin(m_timer / 3) * 280 + m_enemies.m_pool[i]->m_hitBox->m_xPos, m_enemies.m_pool[i]->m_hitBox->m_yPos, 0, 0, 0, 0);
 		}
 	}
-
 	for (int i = 0; i < m_lasers.m_maxIndex; i++) //draw lasers
 	{
-		if (m_lasers.m_pool[i]->active)
+		if (m_lasers.m_pool[i]->m_hitBox->m_active)
 		{
-			m_2dRenderer->drawSprite(m_laserTexture, m_lasers.m_pool[i]->m_xPos, m_lasers.m_pool[i]->m_yPos, 0, 0, 0, 1);
+			m_2dRenderer->drawSprite(m_laserTexture, m_lasers.m_pool[i]->m_hitBox->m_xPos, m_lasers.m_pool[i]->m_hitBox->m_yPos, 0, 0, 0, 1);
 		}
 	}
 
+	for (int i = 0; i < m_enemies.m_maxIndex; i++)		//draw enemy hitbox
+	{
+		if (m_enemies.m_pool[i]->m_hitBox->m_active)
+		{
+			m_2dRenderer->drawBox(/*sin(m_timer / 3) * 280 +*/ m_enemies.m_pool[i]->m_hitBox->m_xPos, m_enemies.m_pool[i]->m_hitBox->m_yPos, m_enemies.m_pool[i]->m_hitBox->m_height, m_enemies.m_pool[i]->m_hitBox->m_width, 0, 0);
+		}
+	}
+	for (int i = 0; i < m_lasers.m_maxIndex; i++) //draw laser hitbox
+	{
+		if (m_lasers.m_pool[i]->m_hitBox->m_active)
+		{
+			m_2dRenderer->drawBox(m_lasers.m_pool[i]->m_hitBox->m_xPos, m_lasers.m_pool[i]->m_hitBox->m_yPos, m_lasers.m_pool[i]->m_hitBox->m_width, m_lasers.m_pool[i]->m_hitBox->m_height, 0, 1);
+		}
+	}
 	// draw a thin line
 	m_2dRenderer->drawLine(300, 300, 600, 400, 2, 1);
 

@@ -2,10 +2,10 @@
 class HitBox
 {
 public:
-	HitBox();
+	HitBox(bool active = true, float x = 0, float y = 0, float w = 0, float h = 0);
 	~HitBox();
 
-	bool CheckHit(HitBox hitBox);
+	bool CheckHit(HitBox* hitBox);
 
 	bool m_active;
 

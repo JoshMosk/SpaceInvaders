@@ -1,4 +1,7 @@
 #pragma once
+
+class HitBox;
+
 class Laser
 {
 public:
@@ -8,9 +11,6 @@ public:
 	void Update(float deltatime);
 	void Shoot(float playerXPos);
 
-	float m_xPos;
-	float m_yPos;
-
-	bool active;
+	HitBox* m_hitBox;
 };
 
