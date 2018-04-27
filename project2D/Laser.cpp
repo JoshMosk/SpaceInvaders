@@ -25,7 +25,7 @@ void Laser::Update(float deltatime)
 
 
 
-		m_hitBox->m_yPos += 350.0f * deltatime;
+		m_hitBox->m_yPos += 500.0f * deltatime;
 	}
 }
 

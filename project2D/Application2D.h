@@ -22,10 +22,8 @@ public:
 protected:
 	
 	Player m_player;
-	ObjectPool<Laser> m_lasers = ObjectPool<Laser>(50);
-	ObjectPool<Enemy> m_enemies = ObjectPool<Enemy>(10, 70);
-
-
+	ObjectPool<Laser>* m_lasers; 
+	ObjectPool<Enemy>* m_enemies;
 
 	int m_nextLaser = 0;
 	float m_shootTimer = 0;
@@ -36,9 +34,7 @@ protected:
 	aie::Texture*		m_BackgroundTexture;
 
 	aie::Renderer2D*	m_2dRenderer;
-	aie::Texture*		m_texture;
 	aie::Font*			m_font;
 
-	float m_cameraX, m_cameraY;
 	float m_timer;
 };

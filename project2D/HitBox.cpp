@@ -24,25 +24,33 @@ bool HitBox::CheckHit(HitBox* otherHitBox)		//JM:STARTHERE
 		float otherHitBoxOriginX = otherHitBox->m_xPos - (otherHitBox->m_width / 2);
 		float otherHitBoxOriginY = otherHitBox->m_yPos - (otherHitBox->m_height / 2);
 
+		//if origin point X is within other hitbox X
+
+		//if width is within other hitbox X
+
+		//if other origin X is within hitbox X
+
+		//if other width is within hitbox X
+
 		if		//check x
-			(((hitBoxOriginX >= otherHitBoxOriginX										&&
-			hitBoxOriginX <= (otherHitBoxOriginX + otherHitBox->m_width))				||		//if origin point X is within other hitbox X
-			(hitBoxOriginX + m_width >= otherHitBoxOriginX								&&
-			hitBoxOriginX + m_width <= otherHitBoxOriginX + otherHitBox->m_width))		||		//if width is within other hitbox X
-			((otherHitBoxOriginX >= hitBoxOriginX										&&
-			otherHitBoxOriginX <= hitBoxOriginX + m_width)								||		//if other origin X is within hitbox X
-			(otherHitBoxOriginX + otherHitBox->m_width >= hitBoxOriginX				&&
-			otherHitBoxOriginX + otherHitBox->m_width <= hitBoxOriginX + m_width)))			//if other width is within hitbox X
+			(((hitBoxOriginX >= otherHitBoxOriginX											&&		//if origin point X is within other hitbox X
+			hitBoxOriginX <= (otherHitBoxOriginX + otherHitBox->m_width))					||
+			(hitBoxOriginX + m_width >= otherHitBoxOriginX									&&		//if width is within other hitbox X
+			hitBoxOriginX + m_width <= otherHitBoxOriginX + otherHitBox->m_width))			||
+			((otherHitBoxOriginX >= hitBoxOriginX											&&		//if other origin X is within hitbox X
+			otherHitBoxOriginX <= hitBoxOriginX + m_width)									||
+			(otherHitBoxOriginX + otherHitBox->m_width >= hitBoxOriginX						&&		//if other width is within hitbox X
+			otherHitBoxOriginX + otherHitBox->m_width <= hitBoxOriginX + m_width)))
 		{
 			if		//check y
-				(((hitBoxOriginY >= otherHitBoxOriginY										&&
-				hitBoxOriginY <= (otherHitBoxOriginY + otherHitBox->m_height))				||		//if origin point X is within other hitbox X
-				(hitBoxOriginY + m_height >= otherHitBoxOriginY							&&
-				hitBoxOriginY + m_height <= otherHitBoxOriginY + otherHitBox->m_height)) 	||		//if width is within other hitbox X
-				((otherHitBoxOriginY >= hitBoxOriginY 										&&
-				otherHitBoxOriginY <= hitBoxOriginY + m_height)							||		//if other origin X is within hitbox X
-				(otherHitBoxOriginY + otherHitBox->m_height >= hitBoxOriginY				&&
-				otherHitBoxOriginY + otherHitBox->m_height <= hitBoxOriginY + m_height)))			//if other width is within hitbox X
+				(((hitBoxOriginY >= otherHitBoxOriginY										&&		//if origin point X is within other hitbox X
+				hitBoxOriginY <= (otherHitBoxOriginY + otherHitBox->m_height))				||
+				(hitBoxOriginY + m_height >= otherHitBoxOriginY								&&		//if width is within other hitbox X
+				hitBoxOriginY + m_height <= otherHitBoxOriginY + otherHitBox->m_height))	||
+				((otherHitBoxOriginY >= hitBoxOriginY										&&		//if other origin X is within hitbox X
+				otherHitBoxOriginY <= hitBoxOriginY + m_height)								||
+				(otherHitBoxOriginY + otherHitBox->m_height >= hitBoxOriginY				&&		//if other width is within hitbox X
+				otherHitBoxOriginY + otherHitBox->m_height <= hitBoxOriginY + m_height)))		
 			{
 				return true;
 			}

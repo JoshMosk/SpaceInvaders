@@ -8,7 +8,7 @@ public:
 	Enemy(int xPos, int yPos);
 	~Enemy();
 
-	void Move();
+	void Move(float timer);
 	void Shoot();
 
 	HitBox* m_hitBox;
