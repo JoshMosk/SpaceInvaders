@@ -21,20 +21,20 @@ public:
 
 protected:
 	
-	Player m_player;
-	ObjectPool<Laser>* m_lasers; 
-	ObjectPool<Enemy>* m_enemies;
+	Player m_player;		//the player
+	ObjectPool<Laser>* m_lasers;		//the laser objectpool
+	ObjectPool<Enemy>* m_enemies;		//the enemy objectpool
 
-	int m_nextLaser = 0;
-	float m_shootTimer = 0;
+	int m_nextLaser = 0;		//keeps track of the next laser to use in the laser objectpool
+	float m_shootTimer = 0;		//keeps track of the cooldown for the laser firing
 
-	aie::Texture*		m_laserTexture;
+	aie::Texture*		m_laserTexture;		//the textures for the laser, ship, aliens and background
 	aie::Texture*		m_shipTexture;
 	aie::Texture*		m_alienTexture;
 	aie::Texture*		m_BackgroundTexture;
 
-	aie::Renderer2D*	m_2dRenderer;
-	aie::Font*			m_font;
+	aie::Renderer2D*	m_2dRenderer;		//part of the bootstrap
+	aie::Font*			m_font;		//part of the bootstrap
 
-	float m_timer;
+	float m_timer;		//keeps track of the time
 };

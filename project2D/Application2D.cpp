@@ -17,7 +17,7 @@ Application2D::~Application2D()
 
 }
 
-bool Application2D::startup() 
+bool Application2D::startup()		//create variables on the heap
 {
 	
 	m_2dRenderer = new aie::Renderer2D();
@@ -30,14 +30,19 @@ bool Application2D::startup()
 	m_BackgroundTexture = new aie::Texture("./textures/background.png");
 
 	m_lasers = new ObjectPool<Laser>(5);
-	m_enemies = new ObjectPool<Enemy>(10, 70);
+	m_enemies = new ObjectPool<Enemy>(10, 70, 640);
+
+	for (int i = 0; i < m_enemies->m_maxIndex; i++)		//spaces out enemies along the screen
+	{
+		m_enemies->m_pool[i]->m_hitBox->m_xPos += 320;
+	}
 
 	m_timer = 0;
 
 	return true;
 }
 
-void Application2D::shutdown() 
+void Application2D::shutdown()		//delete variables on the heap
 {
 	delete m_enemies;
 	delete m_lasers;
@@ -54,7 +59,7 @@ void Application2D::update(float deltaTime) {
 	m_timer += deltaTime;
 	m_shootTimer += deltaTime;
 
-	for (int i = 0; i < m_lasers->m_maxIndex; i++)
+	for (int i = 0; i < m_lasers->m_maxIndex; i++)		//checks for a hit between the lasers and enemies
 	{
 		for (int j = 0; j < m_enemies->m_maxIndex; j++)
 		{
@@ -64,7 +69,6 @@ void Application2D::update(float deltaTime) {
 				m_enemies->m_pool[j]->m_hitBox->m_active = false;
 			}
 		}
-		m_lasers->m_pool[i]->Update(deltaTime);
 	}
 
 	// input example
@@ -78,7 +82,7 @@ void Application2D::update(float deltaTime) {
 
 	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE) && m_shootTimer > 0.7f) //shoots bullets if space key is pressed and shoot timer is high enough
 	{
-		if (m_nextLaser == m_lasers->m_maxIndex)
+		if (m_nextLaser == m_lasers->m_maxIndex)		//checks to see if m_nextLaser is the the end of the lasers objectpool
 		{
 			m_nextLaser = 0;
 		}
@@ -88,8 +92,12 @@ void Application2D::update(float deltaTime) {
 		m_nextLaser++;
 		m_shootTimer = 0;
 	}
+	for (int i = 0; i < m_lasers->m_maxIndex; i++)		//update the lasers position
+	{
+		m_lasers->m_pool[i]->Update(deltaTime);
+	}
 
-	for (int i = 0; i < m_enemies->m_maxIndex; i++)
+	for (int i = 0; i < m_enemies->m_maxIndex; i++)		//update the enemies' position
 	{
 		m_enemies->m_pool[i]->Move(m_timer);
 	}
@@ -105,25 +113,24 @@ void Application2D::draw()
 	// wipe the screen to the background colour
 	clearScreen();
 
-	// set the camera position before we begin rendering
-	//m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
-
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
 	//draw background
 	m_2dRenderer->drawSprite(m_BackgroundTexture, 0, 0, 1280, 720, 0, 100, 0, 0);
 
-	// demonstrate animation
+	// demonstration of animation for future use
 	//m_2dRenderer->setUVRect(int(m_timer) % 6 / 6.0f, 0, 0.166f, 1);
-	m_2dRenderer->drawSprite(m_shipTexture, 400, 400, 128, 128);
+	//m_2dRenderer->drawSprite(m_shipTexture, 400, 400, 128, 128);
 
-	// draw the player
-	m_2dRenderer->drawSprite(m_shipTexture, m_player.m_hitBox->m_xPos, 50, 96, 96, 0, 1);		
+	//set the UV for drawing sprites
 	m_2dRenderer->setUVRect(0,0,1,1);
 
+	// draw the player
+	m_2dRenderer->drawSprite(m_shipTexture, m_player.m_hitBox->m_xPos, m_player.m_hitBox->m_yPos, 96, 96, 0, 1);
+
 	
-	for (int i = 0; i < m_enemies->m_maxIndex; i++)		// draw an enemy sprite
+	for (int i = 0; i < m_enemies->m_maxIndex; i++)		// draw enemies
 	{
 		if (m_enemies->m_pool[i]->m_hitBox->m_active)
 		{
@@ -137,6 +144,7 @@ void Application2D::draw()
 			m_2dRenderer->drawSprite(m_laserTexture, m_lasers->m_pool[i]->m_hitBox->m_xPos, m_lasers->m_pool[i]->m_hitBox->m_yPos, 0, 0, 0, 1);
 		}
 	}
+
 	
 	// output some text, uses the last used colour
 	char fps[32];
