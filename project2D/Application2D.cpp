@@ -6,6 +6,7 @@
 #include "ObjectPool.h"
 #include "Laser.h"
 #include "HitBox.h"
+#include <assert.h>
 
 Application2D::Application2D() 
 {
@@ -31,6 +32,15 @@ bool Application2D::startup()		//create variables on the heap
 
 	m_lasers = new ObjectPool<Laser>(5);
 	m_enemies = new ObjectPool<Enemy>(10, 50, 640);
+
+	assert(m_2dRenderer);
+	assert(m_font);
+	assert(m_shipTexture);
+	assert(m_laserTexture);
+	assert(m_alienTexture);
+	assert(m_BackgroundTexture);
+	assert(m_lasers);
+	assert(m_enemies);
 
 	m_timer = 0;
 

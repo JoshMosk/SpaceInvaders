@@ -1,4 +1,5 @@
 #pragma once
+#include <assert.h>
 
 template<typename T>
 class ObjectPool
@@ -8,6 +9,7 @@ public:
 	{
 		m_maxIndex = maxIndex;
 		m_pool = new T*[m_maxIndex];
+		assert(m_pool);
 		for (int i = 0; i < m_maxIndex; i++)
 		{
 			m_pool[i] = new T();

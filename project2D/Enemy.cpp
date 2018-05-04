@@ -1,10 +1,12 @@
 #include "Enemy.h"
 #include "HitBox.h"
 #include <math.h>
+#include <assert.h>
 
 Enemy::Enemy(float xPos, float yPos)		//constructor sets the enemy's x and y postion
 {
 	m_hitBox = new HitBox(true, xPos, yPos, 50.0f, 50.0f);
+	assert(m_hitBox);
 	m_canShoot = false;
 }
 

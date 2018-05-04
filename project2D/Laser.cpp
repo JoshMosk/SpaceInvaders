@@ -1,9 +1,11 @@
 #include "Laser.h"
 #include "HitBox.h"
+#include <assert.h>
 
 Laser::Laser()		//creates a laser with default parameters 
 {
 	m_hitBox = new HitBox(false, -50, -50, 30, 30);
+	assert(m_hitBox);
 	m_hitBox->m_active = false;
 }
 
