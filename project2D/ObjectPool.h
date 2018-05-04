@@ -20,11 +20,11 @@ public:
 		m_pool = new T*[m_maxIndex];
 		for (int i = 0; i < m_maxIndex; i++)
 		{
-			m_pool[i] = new T(i * xPos, yPos);
+			m_pool[i] = new T(i * 70 + xPos, yPos);
 		}
 	}
 
-	~ObjectPool()
+	~ObjectPool()		//deletes all the pool index entries
 	{
 		for (int i = 0; i < m_maxIndex; i++)
 		{

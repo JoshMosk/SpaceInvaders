@@ -5,10 +5,10 @@ class HitBox;
 class Enemy
 {
 public:
-	Enemy(int xPos, int yPos);
+	Enemy(float xPos, float yPos);
 	~Enemy();
 
-	void Move(float timer);
+	void Move(float timer, float downTimer);
 	void Shoot();
 
 	HitBox* m_hitBox;

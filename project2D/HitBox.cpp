@@ -1,4 +1,5 @@
 #include "HitBox.h"
+#include <assert.h>
 
 HitBox::HitBox(bool active, float x, float y, float w, float h)		//constructor sets all variables for hitbox
 {
@@ -16,6 +17,7 @@ HitBox::~HitBox()
 
 bool HitBox::CheckHit(HitBox* otherHitBox)
 {
+	assert(otherHitBox && "Hitbox Checkhit, missing otherHitBox variable");		//checks to make sure the other hitbox has been pass in
 
 	if (m_active && otherHitBox->m_active)
 	{

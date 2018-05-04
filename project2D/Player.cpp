@@ -4,8 +4,8 @@
 Player::Player()		//constructor sets the player's x and y position
 {
 	m_hitBox = new HitBox();
-	m_hitBox->m_xPos = 650;
-	m_hitBox->m_yPos = 50;
+	m_hitBox->m_xPos = 640;
+	m_hitBox->m_yPos = 80;
 }
 
 Player::~Player()
